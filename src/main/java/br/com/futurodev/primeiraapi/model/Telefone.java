@@ -1,0 +1,82 @@
+package br.com.futurodev.primeiraapi.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
+@Table(name="telefone")
+public class Telefone {
+    @Id
+    @SequenceGenerator(name="seq_telefone",sequenceName = "seq_telefone")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+//    @Column(unique = true)
+    private String numero;
+
+//    @Column(unique = true)
+    private String tipo;
+
+    @Column(insertable = false,updatable = false)
+    private Long idUsuario;
+
+    @ManyToOne
+    @JoinColumn(name = "idUsuario",referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_usuario"))
+    @JsonBackReference
+    private Usuario usuario;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Telefone that = (Telefone) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+}
